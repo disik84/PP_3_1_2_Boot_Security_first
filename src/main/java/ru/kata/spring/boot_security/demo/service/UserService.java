@@ -10,4 +10,8 @@ import java.util.List;
 
 public interface UserService {
     public List<User> getListUsers();
+    public Long addUserAndGetId(User user);
+    public void addUser(User user);
+    public void addRole(Long userId, int roleId);
+    public void deleteUser(Long id);
 }
