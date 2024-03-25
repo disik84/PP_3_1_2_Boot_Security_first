@@ -17,6 +17,18 @@ public class UserController {
         this.userServiceImp = userServiceImp;
     }
 
+    @GetMapping(value = "/")
+    public String getIndexPage(Principal principal, ModelMap model) {
+        if (principal != null) {
+            model.addAttribute("login", "logout");
+            model.addAttribute("login_text", "Выход");
+        } else {
+            model.addAttribute("login", "login");
+            model.addAttribute("login_text", "Вход");
+        }
+        return "index";
+    }
+
     @GetMapping(value = "/user")
     public String getAdminIndexPage(Principal principal, ModelMap model) {
         model.addAttribute("user", userServiceImp.findByUsername(principal.getName()));

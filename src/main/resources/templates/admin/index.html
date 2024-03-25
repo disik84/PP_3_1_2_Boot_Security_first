@@ -13,6 +13,7 @@
 <table border="1" cellpadding="5">
     <th:block th:each="user:${listUsers}">
         <tr>
+            <td th:text="${user.getId()}"></td>
             <td th:text="${user.getUsername()}"></td>
             <td th:text="${user.getEmail()}"></td>
             <td><a th:href="@{/admin/edit-user-form(id=${user.getId()})}">Редактировать</a></td>

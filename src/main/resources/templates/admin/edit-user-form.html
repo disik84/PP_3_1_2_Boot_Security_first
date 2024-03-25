@@ -15,15 +15,22 @@
     <input type="hidden" id="id" name="id" th:value="${user.getId()}"/>
     <p>
         <label for="username">Имя пользователя</label>
-        <input type="text" id="username" name="username" required size="10" th:value="${user.getUsername()}"/>
+        <input type="text" id="username" name="username" size="10" th:value="${user.getUsername()}"/>
     </p>
     <p>
         <label for="password">Пароль</label>
-        <input type="text" id="password" name="password" required size="10"/>
+        <input type="text" id="password" name="password" size="10"/>
     </p>
     <p>
         <label for="email">E-mail</label>
-        <input type="email" id="email" name="email" required size="10" th:value="${user.getEmail()}"/>
+        <input type="email" id="email" name="email" size="10" th:value="${user.getEmail()}"/>
+    </p>
+    <p>
+        <label>Роль пользователя:</label><br/>
+        <label for="roleUser">user</label>
+        <input type="checkbox" id="roleUser" name="roleUser" th:checked="${checkboxUser}">
+        <label for="roleAdmin">admin</label>
+        <input type="checkbox" id="roleAdmin" name="roleAdmin" th:checked="${checkboxAdmin}">
     </p>
     <button type="submit">Редактировать</button>
 </form>

@@ -10,13 +10,16 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ru.kata.spring.boot_security.demo.dao.UserDao;
+import ru.kata.spring.boot_security.demo.dao.UserDaoImp;
 import ru.kata.spring.boot_security.demo.model.Role;
 import ru.kata.spring.boot_security.demo.model.User;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import java.util.Collection;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 @Service
@@ -24,12 +27,12 @@ import java.util.stream.Collectors;
 public class UserServiceImp implements UserService, UserDetailsService {
     UserDao userDao;
 
-    @PersistenceContext
-    EntityManager em;
+    UserDaoImp userDaoImp;
 
     @Autowired
-    public void setUserDao(UserDao userDao) {
+    public void setUserDao(UserDao userDao, UserDaoImp userDaoImp) {
         this.userDao = userDao;
+        this.userDaoImp = userDaoImp;
     }
 
     @Override
@@ -38,26 +41,8 @@ public class UserServiceImp implements UserService, UserDetailsService {
     }
 
     @Transactional
-    public Long addUserAndGetId(User user) {
-        userDao.save(user);
-        System.out.println("---addUserAndGetId---");
-        System.out.println(user.getId());
-        System.out.println("---addUserAndGetId---");
-        return user.getId();
-    }
-
-    @Transactional
     public void addUser(User user) {
         userDao.save(user);
-    }
-
-    @Transactional
-    public void addRole(Long userId, int roleId) {
-        em.createNativeQuery("INSERT INTO users_roles (user_id, role_id) VALUES (?, ?)")
-                .setParameter(1, userId)
-                .setParameter(2, roleId)
-                .executeUpdate();
-        em.flush();
     }
 
     @Transactional
@@ -66,8 +51,16 @@ public class UserServiceImp implements UserService, UserDetailsService {
         userDao.delete(user);
     }
 
+    public Set<Role> setRolesForUser(String roleAdmin, String roleUser) {
+        return userDaoImp.setRolesForUser(roleAdmin, roleUser);
+    }
+
     public User findUserById(Long id) {
         return userDao.getById(id);
+    }
+
+    public boolean checkNullEditUser(String id, String username, String password, String email) {
+        return userDaoImp.checkNullEditUser(id, username, password, email);
     }
 
     public User findByUsername(String username) {
