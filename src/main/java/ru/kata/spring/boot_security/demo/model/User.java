@@ -61,7 +61,7 @@ public class User implements UserDetails {
                 sb.append("ADMIN ");
             }
             if (role.getName().contains("ROLE_USER")) {
-                sb.append("USER");
+                sb.append("USER ");
             }
         }
         return sb;

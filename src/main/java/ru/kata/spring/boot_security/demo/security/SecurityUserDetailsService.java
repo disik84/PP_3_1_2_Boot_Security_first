@@ -20,7 +20,7 @@ import java.util.stream.Collectors;
 
 @Service
 public class SecurityUserDetailsService implements UserDetailsService {
-    UserServiceImp userServiceImp;
+    private UserServiceImp userServiceImp;
 
     public SecurityUserDetailsService(UserServiceImp userServiceImp) {
         this.userServiceImp = userServiceImp;

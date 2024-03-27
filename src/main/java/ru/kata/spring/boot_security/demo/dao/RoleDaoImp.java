@@ -5,7 +5,7 @@ import ru.kata.spring.boot_security.demo.model.Role;
 
 @Repository
 public class RoleDaoImp {
-    RoleDao roleDao;
+    private RoleDao roleDao;
 
     public RoleDaoImp(RoleDao roleDao) {
         this.roleDao = roleDao;
