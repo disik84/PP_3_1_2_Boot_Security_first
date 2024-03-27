@@ -15,7 +15,6 @@ public interface UserService {
     public void deleteUser(Long id);
     public Set<Role> setRolesForUser(String roleAdmin, String roleUser);
     public User findUserById(Long id);
-    public User findByUsername(String username);
     public boolean checkNullEditUser(String id, String username, String password, String email);
     public boolean getRoleCheckbox(User user, String role);
     //public String setCheckbox(String sRole, Set setRoles);

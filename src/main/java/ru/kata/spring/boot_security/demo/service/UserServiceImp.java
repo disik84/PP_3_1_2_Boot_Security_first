@@ -26,19 +26,20 @@ import java.util.stream.Collectors;
 
 @Service
 @Transactional(readOnly = true)
-public class UserServiceImp implements UserService, UserDetailsService {
+public class UserServiceImp implements UserService /*, UserDetailsService*/ {
     private UserDao userDao;
 
     private UserDaoImp userDaoImp;
 
-    private SecurityUserDetails securityUserDetails;
+    //private SecurityUserDetails securityUserDetails;
 
-    private User user;
+    //private User user;
 
-    public UserServiceImp(UserDao userDao, UserDaoImp userDaoImp, SecurityUserDetails securityUserDetails, User user) {
+    //public UserServiceImp(UserDao userDao, UserDaoImp userDaoImp, SecurityUserDetails securityUserDetails) {
+    public UserServiceImp(UserDao userDao, UserDaoImp userDaoImp) {
         this.userDao = userDao;
         this.userDaoImp = userDaoImp;
-        this.securityUserDetails = securityUserDetails;
+        //this.securityUserDetails = securityUserDetails;
     }
 
     @Override
@@ -92,10 +93,6 @@ public class UserServiceImp implements UserService, UserDetailsService {
         return userDaoImp.createUser(username, password, email, roleAdmin, roleUser);
     }
 
-    @Override
-    public User findByUsername(String username) {
-        return userDaoImp.findByUsername(username);
-    }
 
     //Берет любую пачку ролей и из этой пачки  делает пачку Autorities с точно такими же строками
     /*private Collection<? extends GrantedAuthority> mapRolesToAutorities(Collection<Role> roles) {
@@ -104,7 +101,7 @@ public class UserServiceImp implements UserService, UserDetailsService {
 
     //Здесь из нашего User делаем UserDetails которому нужны только username, password и Autorities
     // можно посмотреть здесь https://www.youtube.com/watch?v=HvovW6Uh1yU на таймкоде 1 час 15 мин
-    @Override
+    /*@Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         User user = findByUsername(username);
         if (user == null) {
@@ -112,6 +109,6 @@ public class UserServiceImp implements UserService, UserDetailsService {
         }
         return new org.springframework.security.core.userdetails.User(user.getUsername(), user.getPassword(),
                 user.getAuthorities());
-    }
+    }*/
 
 }
