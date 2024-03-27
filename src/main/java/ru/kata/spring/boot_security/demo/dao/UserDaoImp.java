@@ -5,9 +5,11 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 import ru.kata.spring.boot_security.demo.model.Role;
 import ru.kata.spring.boot_security.demo.model.User;
 
+import javax.annotation.PostConstruct;
 import java.util.*;
 
 @Repository
@@ -87,4 +89,5 @@ public class UserDaoImp  {
     public User findByUsername(String username) {
         return userDao.findByUsername(username);
     }
+
 }

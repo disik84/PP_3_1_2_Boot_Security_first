@@ -4,10 +4,13 @@ import lombok.Data;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.transaction.annotation.Transactional;
 import ru.kata.spring.boot_security.demo.service.UserServiceImp;
 
+import javax.annotation.PostConstruct;
 import javax.persistence.*;
 import java.util.Collection;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Set;
 
@@ -29,7 +32,15 @@ public class User {
     public User() {
     }
 
-    public User(Long id, String username, String password, String email, Set<Role> roles) {
+    public User(String username, String password, String email) {
+        this.id = id;
+        this.username = username;
+        this.password = password;
+        this.email = email;
+        this.roles = roles;
+    }
+
+    public User(String username, String password, String email, Set<Role> roles) {
         this.id = id;
         this.username = username;
         this.password = password;
@@ -69,4 +80,5 @@ public class User {
         }
         return checkbox;
     }
+
 }

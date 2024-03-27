@@ -17,6 +17,7 @@ import ru.kata.spring.boot_security.demo.dao.UserDaoImp;
 import ru.kata.spring.boot_security.demo.model.Role;
 import ru.kata.spring.boot_security.demo.model.User;
 
+import javax.annotation.PostConstruct;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import java.util.*;
@@ -106,5 +107,6 @@ public class UserServiceImp implements UserService, UserDetailsService {
         return new org.springframework.security.core.userdetails.User(user.getUsername(), user.getPassword(),
                 mapRolesToAutorities(user.getRoles()));
     }
+
 
 }
