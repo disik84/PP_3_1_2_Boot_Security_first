@@ -36,7 +36,7 @@ public class UserController {
     public String getAdminIndexPage(Principal principal, ModelMap model) {
         model.addAttribute("username", principal.getName());
         model.addAttribute("profileRole", userServiceImp.getProfileRole());
-        model.addAttribute("user", securityUserDetailsService.findByUsername(principal.getName()));
+        model.addAttribute("user", userServiceImp.findByUsername(principal.getName()));
         return "user";
     }
 }

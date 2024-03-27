@@ -18,23 +18,21 @@ import java.util.Collection;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
-@Component
+@Service
 public class SecurityUserDetailsService implements UserDetailsService {
-    UserDao userDao;
+    UserServiceImp userServiceImp;
 
-    public SecurityUserDetailsService(UserDao userDao) {
-        this.userDao = userDao;
+    public SecurityUserDetailsService(UserServiceImp userServiceImp) {
+        this.userServiceImp = userServiceImp;
     }
 
 
-    public User findByUsername(String username) {
-        return userDao.findByUsername(username);
-    }
+
 
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         System.out.println("----------username----------" + username);
-        User user = findByUsername(username);
+        User user = userServiceImp.findByUsername(username);
         System.out.println("----------user----------" + user);
         if (Optional.ofNullable(user).isEmpty()) {
             throw new UsernameNotFoundException("User not found");

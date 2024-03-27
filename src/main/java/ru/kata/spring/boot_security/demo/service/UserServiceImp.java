@@ -93,6 +93,9 @@ public class UserServiceImp implements UserService /*, UserDetailsService*/ {
         return userDaoImp.createUser(username, password, email, roleAdmin, roleUser);
     }
 
+    public User findByUsername(String username) {
+        return userDao.findByUsername(username);
+    }
 
     //Берет любую пачку ролей и из этой пачки  делает пачку Autorities с точно такими же строками
     /*private Collection<? extends GrantedAuthority> mapRolesToAutorities(Collection<Role> roles) {
