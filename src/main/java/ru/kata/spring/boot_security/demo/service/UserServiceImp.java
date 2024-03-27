@@ -1,5 +1,5 @@
 package ru.kata.spring.boot_security.demo.service;
-
+//test
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.jdbc.core.JdbcTemplate;
