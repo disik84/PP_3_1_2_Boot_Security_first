@@ -16,6 +16,10 @@ public interface UserService {
     public Set<Role> setRolesForUser(String roleAdmin, String roleUser);
     public User findUserById(Long id);
     public User findByUsername(String username);
-
     public boolean checkNullEditUser(String id, String username, String password, String email);
+    public boolean getRoleCheckbox(User user, String role);
+    //public String setCheckbox(String sRole, Set setRoles);
+    public String getProfileRole();
+    public String getPasswordHash(String password);
+    public User createUser(String username, String password, String email, String roleAdmin, String roleUser);
 }

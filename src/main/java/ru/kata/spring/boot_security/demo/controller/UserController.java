@@ -11,7 +11,7 @@ import java.security.Principal;
 
 @Controller
 public class UserController {
-    UserServiceImp userServiceImp;
+    private UserServiceImp userServiceImp;
 
     public UserController(UserServiceImp userServiceImp) {
         this.userServiceImp = userServiceImp;
@@ -31,6 +31,8 @@ public class UserController {
 
     @GetMapping(value = "/user")
     public String getAdminIndexPage(Principal principal, ModelMap model) {
+        model.addAttribute("username", principal.getName());
+        model.addAttribute("profileRole", userServiceImp.getProfileRole());
         model.addAttribute("user", userServiceImp.findByUsername(principal.getName()));
         return "user";
     }

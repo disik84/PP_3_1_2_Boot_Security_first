@@ -1,6 +1,8 @@
 package ru.kata.spring.boot_security.demo.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
@@ -12,29 +14,31 @@ import ru.kata.spring.boot_security.demo.model.User;
 import ru.kata.spring.boot_security.demo.service.UserServiceImp;
 
 import java.security.Principal;
-import java.util.Iterator;
+import java.util.HashSet;
+import java.util.Optional;
 import java.util.Set;
 
 @Controller
 public class AdminController {
     private UserServiceImp userServiceImp;
 
-    private PasswordEncoder passwordEncoder;
-
     @Autowired
     public AdminController(UserServiceImp userServiceImp, PasswordEncoder passwordEncoder) {
         this.userServiceImp = userServiceImp;
-        this.passwordEncoder = passwordEncoder;
     }
 
     @GetMapping(value = "/admin")
     public String getAdminIndexPage(Principal principal, ModelMap model) {
+        model.addAttribute("username", principal.getName());
+        model.addAttribute("profileRole", userServiceImp.getProfileRole());
         model.addAttribute("listUsers", userServiceImp.getListUsers());
         return "admin/index";
     }
 
     @GetMapping(value = "/admin/add-user")
-    public String addUser(ModelMap model) {
+    public String addUser(Principal principal, ModelMap model) {
+        model.addAttribute("username", principal.getName());
+        model.addAttribute("profileRole", userServiceImp.getProfileRole());
         return "admin/add-user";
     }
 
@@ -45,46 +49,15 @@ public class AdminController {
                                   @RequestParam(value = "roleAdmin", required = false) String roleAdmin,
                                   @RequestParam(value = "roleUser", required = false) String roleUser,
                                   ModelMap model) {
-
-        User user = new User(username, passwordEncoder.encode(password), email);
-        user.setRoles(userServiceImp.setRolesForUser(roleAdmin, roleUser));
-        userServiceImp.addUser(user);
-
+        userServiceImp.addUser(userServiceImp.createUser(username, password, email, roleAdmin, roleUser));
         return "redirect:/admin";
     }
 
     @GetMapping(value = "/admin/delete-user")
     public String deletedUser(@RequestParam(value = "id") String id,
                               ModelMap model) {
-        if (id != "") {
-            userServiceImp.deleteUser(Long.parseLong(id));
-        }
+        userServiceImp.deleteUser(Long.parseLong(id));
         return "redirect:/admin";
-    }
-
-    @GetMapping(value = "/admin/edit-user-form")
-    public String editUserForm(@RequestParam(value = "id") String id,
-                               ModelMap model) {
-        if (id != "") {
-            User user = userServiceImp.findUserById(Long.parseLong(id));
-            String checkboxAdmin = "false";
-            String checkboxUser = "false";
-            Set setRoles = user.getRoles();
-            Iterator iterator = setRoles.iterator();
-            while (iterator.hasNext()) {
-                Role role = (Role) iterator.next();
-                if (role.getName().contains("ROLE_ADMIN")) {
-                    checkboxAdmin = "true";
-                } else if (role.getName().contains("ROLE_USER")) {
-                    checkboxUser = "true";
-                }
-            }
-            model.addAttribute("checkboxAdmin", checkboxAdmin);
-            model.addAttribute("checkboxUser", checkboxUser);
-            model.addAttribute("user", user);
-            return "admin/edit-user-form";
-        }
-        return "admin/user-not-found";
     }
 
     @PostMapping(value = "/admin/edit-user")
@@ -102,11 +75,10 @@ public class AdminController {
         User user = userServiceImp.findUserById(Long.parseLong(id));
         user.setId(Long.parseLong(id));
         user.setUsername(username);
-        user.setPassword(passwordEncoder.encode(password));
+        user.setPassword(userServiceImp.getPasswordHash(password));
         user.setEmail(email);
         user.setRoles(userServiceImp.setRolesForUser(roleAdmin, roleUser));
         userServiceImp.addUser(user);
-
         return "redirect:/admin";
     }
 }

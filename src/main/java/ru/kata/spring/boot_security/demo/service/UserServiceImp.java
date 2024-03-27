@@ -1,12 +1,15 @@
 package ru.kata.spring.boot_security.demo.service;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ru.kata.spring.boot_security.demo.dao.UserDao;
@@ -16,21 +19,17 @@ import ru.kata.spring.boot_security.demo.model.User;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
-import java.util.Collection;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
 @Transactional(readOnly = true)
 public class UserServiceImp implements UserService, UserDetailsService {
-    UserDao userDao;
+    private UserDao userDao;
 
-    UserDaoImp userDaoImp;
+    private UserDaoImp userDaoImp;
 
-    @Autowired
-    public void setUserDao(UserDao userDao, UserDaoImp userDaoImp) {
+    public UserServiceImp(UserDao userDao, UserDaoImp userDaoImp) {
         this.userDao = userDao;
         this.userDaoImp = userDaoImp;
     }
@@ -51,20 +50,44 @@ public class UserServiceImp implements UserService, UserDetailsService {
         userDao.delete(user);
     }
 
+    @Override
     public Set<Role> setRolesForUser(String roleAdmin, String roleUser) {
         return userDaoImp.setRolesForUser(roleAdmin, roleUser);
     }
 
+    @Override
     public User findUserById(Long id) {
         return userDao.getById(id);
     }
 
+    @Override
     public boolean checkNullEditUser(String id, String username, String password, String email) {
         return userDaoImp.checkNullEditUser(id, username, password, email);
     }
 
+    @Override
+    public boolean getRoleCheckbox(User user, String role) {
+        return userDaoImp.getRoleCheckbox(user, role);
+    }
+
+    @Override
+    public String getProfileRole() {
+        return userDaoImp.getProfileRole();
+    }
+
+    @Override
+    public String getPasswordHash(String password) {
+        return userDaoImp.getPasswordHash(password);
+    }
+
+    @Override
+    public User createUser(String username, String password, String email, String roleAdmin, String roleUser) {
+        return userDaoImp.createUser(username, password, email, roleAdmin, roleUser);
+    }
+
+    @Override
     public User findByUsername(String username) {
-        return userDao.findByUsername(username);
+        return userDaoImp.findByUsername(username);
     }
 
     //Берет любую пачку ролей и из этой пачки  делает пачку Autorities с точно такими же строками
