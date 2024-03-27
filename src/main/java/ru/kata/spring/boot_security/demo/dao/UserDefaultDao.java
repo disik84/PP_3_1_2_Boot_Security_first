@@ -42,14 +42,14 @@ public class UserDefaultDao {
         setRoleAdmin.add(roleUser);
         setRoleAdmin.add(roleAdmin);
         //создаем admin
-        User userAdmin = new User("admin", userServiceImp.getPasswordHash("admin"), "Eadmin@google.com", setRoleAdmin);
+        User userAdmin = new User("admin", userServiceImp.getPasswordHash("admin"), "admin@google.com", setRoleAdmin);
         userServiceImp.addUser(userAdmin);
 
         //Создаем роли для user
         Set<Role> setRoleUser = new HashSet<>();
         setRoleUser.add(roleUser);
         //создаем user
-        User userUser = new User("user", userServiceImp.getPasswordHash("user"), "Euser@google.com", setRoleUser);
+        User userUser = new User("user", userServiceImp.getPasswordHash("user"), "user@google.com", setRoleUser);
         userServiceImp.addUser(userUser);
     }
 }

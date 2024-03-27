@@ -16,6 +16,7 @@ import ru.kata.spring.boot_security.demo.dao.UserDao;
 import ru.kata.spring.boot_security.demo.dao.UserDaoImp;
 import ru.kata.spring.boot_security.demo.model.Role;
 import ru.kata.spring.boot_security.demo.model.User;
+import ru.kata.spring.boot_security.demo.security.SecurityUserDetails;
 
 import javax.annotation.PostConstruct;
 import javax.persistence.EntityManager;
@@ -30,9 +31,14 @@ public class UserServiceImp implements UserService, UserDetailsService {
 
     private UserDaoImp userDaoImp;
 
-    public UserServiceImp(UserDao userDao, UserDaoImp userDaoImp) {
+    private SecurityUserDetails securityUserDetails;
+
+    private User user;
+
+    public UserServiceImp(UserDao userDao, UserDaoImp userDaoImp, SecurityUserDetails securityUserDetails, User user) {
         this.userDao = userDao;
         this.userDaoImp = userDaoImp;
+        this.securityUserDetails = securityUserDetails;
     }
 
     @Override
@@ -92,9 +98,9 @@ public class UserServiceImp implements UserService, UserDetailsService {
     }
 
     //Берет любую пачку ролей и из этой пачки  делает пачку Autorities с точно такими же строками
-    private Collection<? extends GrantedAuthority> mapRolesToAutorities(Collection<Role> roles) {
+    /*private Collection<? extends GrantedAuthority> mapRolesToAutorities(Collection<Role> roles) {
         return roles.stream().map(r -> new SimpleGrantedAuthority(r.getName())).collect(Collectors.toList());
-    }
+    }*/
 
     //Здесь из нашего User делаем UserDetails которому нужны только username, password и Autorities
     // можно посмотреть здесь https://www.youtube.com/watch?v=HvovW6Uh1yU на таймкоде 1 час 15 мин
@@ -105,7 +111,7 @@ public class UserServiceImp implements UserService, UserDetailsService {
             throw new UsernameNotFoundException(String.format("User %s not found: ", username));
         }
         return new org.springframework.security.core.userdetails.User(user.getUsername(), user.getPassword(),
-                mapRolesToAutorities(user.getRoles()));
+                user.getAuthorities());
     }
 
 
