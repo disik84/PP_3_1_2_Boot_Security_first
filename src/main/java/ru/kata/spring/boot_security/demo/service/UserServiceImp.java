@@ -114,5 +114,4 @@ public class UserServiceImp implements UserService, UserDetailsService {
                 user.getAuthorities());
     }
 
-
 }
