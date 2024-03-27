@@ -11,14 +11,22 @@ import java.util.Set;
 
 public interface UserService {
     public List<User> getListUsers();
+
     public void addUser(User user);
+
     public void deleteUser(Long id);
+
     public Set<Role> setRolesForUser(String roleAdmin, String roleUser);
+
     public User findUserById(Long id);
+
     public boolean checkNullEditUser(String id, String username, String password, String email);
+
     public boolean getRoleCheckbox(User user, String role);
-    //public String setCheckbox(String sRole, Set setRoles);
+
     public String getProfileRole();
+
     public String getPasswordHash(String password);
+
     public User createUser(String username, String password, String email, String roleAdmin, String roleUser);
 }

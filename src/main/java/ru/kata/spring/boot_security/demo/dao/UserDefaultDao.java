@@ -22,7 +22,7 @@ public class UserDefaultDao {
     RoleServiceImp roleServiceImp;
 
     @Autowired
-    public UserDefaultDao(UserDao userDao, UserDaoImp userDaoImp, UserServiceImp userServiceImp, RoleServiceImp roleServiceImp) {
+    public UserDefaultDao(UserDaoImp userDaoImp, UserServiceImp userServiceImp, RoleServiceImp roleServiceImp) {
         this.userDaoImp = userDaoImp;
         this.userServiceImp = userServiceImp;
         this.roleServiceImp = roleServiceImp;

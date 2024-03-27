@@ -49,10 +49,6 @@ public class User implements UserDetails {
         this.roles = roles;
     }
 
-    /*@ManyToMany
-    @JoinTable(name = "users_roles",
-            joinColumns = @JoinColumn(name = "user_id"),
-            inverseJoinColumns = @JoinColumn(name = "role_id"))*/
     @ManyToMany(fetch = FetchType.EAGER)
     private Set<Role> roles;
 
