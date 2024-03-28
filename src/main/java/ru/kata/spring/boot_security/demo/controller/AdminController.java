@@ -49,7 +49,7 @@ public class AdminController {
                                   @RequestParam(value = "roleAdmin", required = false) String roleAdmin,
                                   @RequestParam(value = "roleUser", required = false) String roleUser,
                                   ModelMap model) {
-        userServiceImp.addUser(userServiceImp.createUser(username, password, email, roleAdmin, roleUser));
+        userServiceImp.addUser(userServiceImp.updateUser(username, password, email, roleAdmin, roleUser));
         return "redirect:/admin";
     }
 

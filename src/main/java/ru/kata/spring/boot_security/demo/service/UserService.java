@@ -28,5 +28,5 @@ public interface UserService {
 
     public String getPasswordHash(String password);
 
-    public User createUser(String username, String password, String email, String roleAdmin, String roleUser);
+    public User updateUser(String username, String password, String email, String roleAdmin, String roleUser);
 }
