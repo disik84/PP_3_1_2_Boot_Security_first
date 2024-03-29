@@ -77,7 +77,7 @@ public class UserDaoImp  {
         return passwordEncoder.encode(password);
     }
 
-    public User createUser(String username, String password, String email, String roleAdmin, String roleUser) {
+    public User updateUser(String username, String password, String email, String roleAdmin, String roleUser) {
         User user = new User();
         user.setUsername(username);
         user.setPassword(getPasswordHash(password));

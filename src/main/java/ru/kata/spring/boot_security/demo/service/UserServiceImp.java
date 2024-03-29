@@ -71,7 +71,7 @@ public class UserServiceImp implements UserService {
     @Override
     @Transactional
     public User updateUser(String username, String password, String email, String roleAdmin, String roleUser) {
-        return userDaoImp.createUser(username, password, email, roleAdmin, roleUser);
+        return userDaoImp.updateUser(username, password, email, roleAdmin, roleUser);
     }
 
     public User findByUsername(String username) {
