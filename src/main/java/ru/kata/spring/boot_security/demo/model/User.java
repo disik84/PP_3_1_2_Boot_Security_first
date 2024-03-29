@@ -29,6 +29,9 @@ public class User {
 
     private String email;
 
+    @ManyToMany(fetch = FetchType.EAGER)
+    private Set<Role> roles;
+
     public User() {
     }
 
@@ -37,7 +40,6 @@ public class User {
         this.username = username;
         this.password = password;
         this.email = email;
-        this.roles = roles;
     }
 
     public User(String username, String password, String email, Set<Role> roles) {
@@ -47,9 +49,6 @@ public class User {
         this.email = email;
         this.roles = roles;
     }
-
-    @ManyToMany(fetch = FetchType.EAGER)
-    private Set<Role> roles;
 
     public StringBuilder getSimpleRoles() {
         StringBuilder sb = new StringBuilder();
@@ -66,6 +65,8 @@ public class User {
         return sb;
     }
 
+    //Этот метод решил оставить в User, но удалил из UserServiceImp, потому что в шаблоне к нему удобнее обращаться
+    //когда он в User
     public boolean getRoleCheckbox(String roleStr) {
         boolean checkbox = false;
         Iterator iterator = getRoles().iterator();
@@ -77,11 +78,5 @@ public class User {
         }
         return checkbox;
     }
-
-    //Берет любую пачку ролей и из этой пачки  делает пачку Autorities с точно такими же строками
-    public Collection<? extends GrantedAuthority> getAuthorities() {
-        return getRoles().stream().map(r -> new SimpleGrantedAuthority(r.getName())).collect(Collectors.toList());
-    }
-
 
 }
