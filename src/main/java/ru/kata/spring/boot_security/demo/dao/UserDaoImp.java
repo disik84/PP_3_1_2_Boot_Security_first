@@ -1,6 +1,7 @@
 package ru.kata.spring.boot_security.demo.dao;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -8,6 +9,7 @@ import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 import ru.kata.spring.boot_security.demo.model.Role;
 import ru.kata.spring.boot_security.demo.model.User;
+import ru.kata.spring.boot_security.demo.service.UserServiceImp;
 
 import javax.annotation.PostConstruct;
 import java.util.*;
@@ -17,12 +19,12 @@ public class UserDaoImp  {
 
     private UserDao userDao;
 
-    private PasswordEncoder passwordEncoder;
+    private UserServiceImp userServiceImp;
 
     @Autowired
-    public UserDaoImp(PasswordEncoder passwordEncoder, UserDao userDao) {
-        this.passwordEncoder = passwordEncoder;
+    public UserDaoImp(UserDao userDao, @Lazy UserServiceImp userServiceImp) {
         this.userDao = userDao;
+        this.userServiceImp = userServiceImp;
     }
 
     public Set<Role> setRolesForUser(String roleAdmin, String roleUser) {
@@ -73,14 +75,10 @@ public class UserDaoImp  {
         return s;
     }
 
-    public String getPasswordHash(String password) {
-        return passwordEncoder.encode(password);
-    }
-
     public User updateUser(String username, String password, String email, String roleAdmin, String roleUser) {
         User user = new User();
         user.setUsername(username);
-        user.setPassword(getPasswordHash(password));
+        user.setPassword(userServiceImp.getPasswordHash(password));
         user.setEmail(email);
         user.setRoles(setRolesForUser(roleAdmin, roleUser));
         return user;

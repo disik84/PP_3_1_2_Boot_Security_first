@@ -1,6 +1,7 @@
 package ru.kata.spring.boot_security.demo.service;
 //test
 
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import ru.kata.spring.boot_security.demo.dao.UserDao;
@@ -17,9 +18,17 @@ public class UserServiceImp implements UserService {
 
     private UserDaoImp userDaoImp;
 
-    public UserServiceImp(UserDao userDao, UserDaoImp userDaoImp) {
+    private PasswordEncoder passwordEncoder;
+
+    public UserServiceImp(UserDao userDao, UserDaoImp userDaoImp, PasswordEncoder passwordEncoder) {
         this.userDao = userDao;
         this.userDaoImp = userDaoImp;
+        this.passwordEncoder = passwordEncoder;
+    }
+
+    @Override
+    public String getPasswordHash(String password) {
+        return passwordEncoder.encode(password);
     }
 
     @Override
@@ -61,11 +70,6 @@ public class UserServiceImp implements UserService {
     @Override
     public String getProfileRole() {
         return userDaoImp.getProfileRole();
-    }
-
-    @Override
-    public String getPasswordHash(String password) {
-        return userDaoImp.getPasswordHash(password);
     }
 
     @Override
