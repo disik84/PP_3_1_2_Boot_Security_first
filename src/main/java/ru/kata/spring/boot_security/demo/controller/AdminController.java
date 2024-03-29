@@ -1,29 +1,21 @@
 package ru.kata.spring.boot_security.demo.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import ru.kata.spring.boot_security.demo.model.Role;
-import ru.kata.spring.boot_security.demo.model.User;
 import ru.kata.spring.boot_security.demo.service.UserServiceImp;
 
 import java.security.Principal;
-import java.util.HashSet;
-import java.util.Optional;
-import java.util.Set;
 
 @Controller
 public class AdminController {
-    private UserServiceImp userServiceImp;
+    private final UserServiceImp userServiceImp;
 
     @Autowired
-    public AdminController(UserServiceImp userServiceImp, PasswordEncoder passwordEncoder) {
+    public AdminController(UserServiceImp userServiceImp) {
         this.userServiceImp = userServiceImp;
     }
 
@@ -68,7 +60,7 @@ public class AdminController {
                            @RequestParam(value = "roleAdmin", required = false) String roleAdmin,
                            @RequestParam(value = "roleUser", required = false) String roleUser,
                            ModelMap model) {
-        if (userServiceImp.checkNullEditUser(id, username, password, email) == false) {
+        if (userServiceImp.checkNullEditUser(username, password, email) == false) {
             model.addAttribute("id", id);
             return "admin/edit-user-error";
         }

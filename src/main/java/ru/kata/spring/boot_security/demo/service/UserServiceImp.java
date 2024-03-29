@@ -15,12 +15,10 @@ import java.util.*;
 @Service
 @Transactional(readOnly = true)
 public class UserServiceImp implements UserService {
-    private UserDao userDao;
-
-    private UserDaoImp userDaoImp;
-    private RoleDaoImp roleDaoImp;
-
-    private PasswordEncoder passwordEncoder;
+    private final UserDao userDao;
+    private final UserDaoImp userDaoImp;
+    private final RoleDaoImp roleDaoImp;
+    private final PasswordEncoder passwordEncoder;
 
     public UserServiceImp(UserDao userDao, UserDaoImp userDaoImp, RoleDaoImp roleDaoImp, PasswordEncoder passwordEncoder) {
         this.userDao = userDao;
@@ -61,8 +59,8 @@ public class UserServiceImp implements UserService {
     }
 
     @Override
-    public boolean checkNullEditUser(String id, String username, String password, String email) {
-        return userDaoImp.checkNullEditUser(id, username, password, email);
+    public boolean checkNullEditUser(String username, String password, String email) {
+        return userDaoImp.checkNullEditUser(username, password, email);
     }
 
     @Override

@@ -4,13 +4,12 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Repository;
 import ru.kata.spring.boot_security.demo.model.Role;
-import ru.kata.spring.boot_security.demo.model.User;
 
 import java.util.*;
 
 @Repository
 public class RoleDaoImp {
-    private RoleDao roleDao;
+    private final RoleDao roleDao;
 
     public RoleDaoImp(RoleDao roleDao) {
         this.roleDao = roleDao;
@@ -46,20 +45,6 @@ public class RoleDaoImp {
         }
         s = s.replaceAll("ROLE_", " ");
         return s;
-    }
-
-
-    public boolean getRoleCheckbox(User user, String roleStr) {
-        Set setRoles = user.getRoles();
-        boolean checkbox = false;
-        Iterator iterator = setRoles.iterator();
-        while (iterator.hasNext()) {
-            Role role = (Role) iterator.next();
-            if (role.getName().contains(roleStr)) {
-                checkbox = true;
-            }
-        }
-        return checkbox;
     }
 
 }

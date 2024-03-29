@@ -8,7 +8,7 @@ import ru.kata.spring.boot_security.demo.model.Role;
 @Service
 @Transactional(readOnly = true)
 public class RoleServiceImp implements RoleService {
-    private RoleDaoImp roleDaoImp;
+    private final RoleDaoImp roleDaoImp;
 
     public RoleServiceImp(RoleDaoImp roleDaoImp) {
         this.roleDaoImp = roleDaoImp;
