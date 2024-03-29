@@ -7,6 +7,7 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
+import ru.kata.spring.boot_security.demo.security.SecurityUserDetails;
 import ru.kata.spring.boot_security.demo.service.UserServiceImp;
 
 import javax.annotation.PostConstruct;
@@ -32,6 +33,8 @@ public class User {
     @ManyToMany(fetch = FetchType.EAGER)
     private Set<Role> roles;
 
+    private SecurityUserDetails securityUserDetails;
+
     public User() {
     }
 
@@ -49,6 +52,7 @@ public class User {
         this.email = email;
         this.roles = roles;
     }
+
 
     public StringBuilder getSimpleRoles() {
         StringBuilder sb = new StringBuilder();

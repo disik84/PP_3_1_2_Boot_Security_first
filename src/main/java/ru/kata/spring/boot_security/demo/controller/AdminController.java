@@ -72,13 +72,7 @@ public class AdminController {
             model.addAttribute("id", id);
             return "admin/edit-user-error";
         }
-        User user = userServiceImp.findUserById(Long.parseLong(id));
-        user.setId(Long.parseLong(id));
-        user.setUsername(username);
-        user.setPassword(userServiceImp.getPasswordHash(password));
-        user.setEmail(email);
-        user.setRoles(userServiceImp.setRolesForUser(roleAdmin, roleUser));
-        userServiceImp.addUser(user);
+        userServiceImp.addUser(userServiceImp.setUserForUpdate(id, username, password, email, roleAdmin, roleUser));
         return "redirect:/admin";
     }
 }

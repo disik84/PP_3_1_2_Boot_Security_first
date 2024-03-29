@@ -80,4 +80,13 @@ public class UserServiceImp implements UserService {
         return userDao.findByUsername(username);
     }
 
+    public User setUserForUpdate(String id, String username, String password, String email, String roleAdmin, String roleUser) {
+        User user = findUserById(Long.parseLong(id));
+        user.setId(Long.parseLong(id));
+        user.setUsername(username);
+        user.setPassword(getPasswordHash(password));
+        user.setEmail(email);
+        user.setRoles(setRolesForUser(roleAdmin, roleUser));
+        return user;
+    }
 }
