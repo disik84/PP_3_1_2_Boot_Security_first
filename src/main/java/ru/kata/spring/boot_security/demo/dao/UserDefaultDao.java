@@ -15,15 +15,13 @@ import java.util.Set;
 @Repository
 public class UserDefaultDao {
 
-    private UserDaoImp userDaoImp;
 
     private UserServiceImp userServiceImp;
 
     private RoleServiceImp roleServiceImp;
 
     @Autowired
-    public UserDefaultDao(UserDaoImp userDaoImp, UserServiceImp userServiceImp, RoleServiceImp roleServiceImp) {
-        this.userDaoImp = userDaoImp;
+    public UserDefaultDao(UserServiceImp userServiceImp, RoleServiceImp roleServiceImp) {
         this.userServiceImp = userServiceImp;
         this.roleServiceImp = roleServiceImp;
     }

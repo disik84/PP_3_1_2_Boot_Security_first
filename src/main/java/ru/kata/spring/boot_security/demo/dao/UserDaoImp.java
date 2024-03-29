@@ -21,27 +21,13 @@ public class UserDaoImp  {
 
     private UserServiceImp userServiceImp;
 
+    private RoleDaoImp roleDaoImp;
+
     @Autowired
-    public UserDaoImp(UserDao userDao, @Lazy UserServiceImp userServiceImp) {
+    public UserDaoImp(UserDao userDao, @Lazy UserServiceImp userServiceImp, RoleDaoImp roleDaoImp) {
         this.userDao = userDao;
         this.userServiceImp = userServiceImp;
-    }
-
-    public Set<Role> setRolesForUser(String roleAdmin, String roleUser) {
-        Set<Role> setRole = new HashSet<>();
-        Role userRole = new Role();
-        Role userAdmin = new Role();
-        if (!Optional.ofNullable(roleAdmin).isEmpty()) {
-            userRole.setId(2L);
-            userRole.setName("ROLE_ADMIN");
-            setRole.add(userRole);
-        }
-        if (!Optional.ofNullable(roleUser).isEmpty()) {
-            userAdmin.setId(1L);
-            userAdmin.setName("ROLE_USER");
-            setRole.add(userAdmin);
-        }
-        return setRole;
+        this.roleDaoImp = roleDaoImp;
     }
 
     public boolean checkNullEditUser(String id, String username, String password, String email) {
@@ -51,36 +37,12 @@ public class UserDaoImp  {
         return true;
     }
 
-    public boolean getRoleCheckbox(User user, String roleStr) {
-        Set setRoles = user.getRoles();
-        boolean checkbox = false;
-        Iterator iterator = setRoles.iterator();
-        while (iterator.hasNext()) {
-            Role role = (Role) iterator.next();
-            if (role.getName().contains(roleStr)) {
-                checkbox = true;
-            }
-        }
-        return checkbox;
-    }
-
-    public String getProfileRole() {
-        Collection<SimpleGrantedAuthority> authorities = (Collection<SimpleGrantedAuthority>) SecurityContextHolder
-                .getContext().getAuthentication().getAuthorities();
-        String s = new String();
-        for (SimpleGrantedAuthority a : authorities) {
-            s = s + a;
-        }
-        s = s.replaceAll("ROLE_", " ");
-        return s;
-    }
-
     public User updateUser(String username, String password, String email, String roleAdmin, String roleUser) {
         User user = new User();
         user.setUsername(username);
         user.setPassword(userServiceImp.getPasswordHash(password));
         user.setEmail(email);
-        user.setRoles(setRolesForUser(roleAdmin, roleUser));
+        user.setRoles(roleDaoImp.setRolesForUser(roleAdmin, roleUser));
         return user;
     }
 

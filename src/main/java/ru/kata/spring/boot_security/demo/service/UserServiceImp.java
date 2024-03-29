@@ -4,6 +4,7 @@ package ru.kata.spring.boot_security.demo.service;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import ru.kata.spring.boot_security.demo.dao.RoleDaoImp;
 import ru.kata.spring.boot_security.demo.dao.UserDao;
 import ru.kata.spring.boot_security.demo.dao.UserDaoImp;
 import ru.kata.spring.boot_security.demo.model.Role;
@@ -17,12 +18,14 @@ public class UserServiceImp implements UserService {
     private UserDao userDao;
 
     private UserDaoImp userDaoImp;
+    private RoleDaoImp roleDaoImp;
 
     private PasswordEncoder passwordEncoder;
 
-    public UserServiceImp(UserDao userDao, UserDaoImp userDaoImp, PasswordEncoder passwordEncoder) {
+    public UserServiceImp(UserDao userDao, UserDaoImp userDaoImp, RoleDaoImp roleDaoImp, PasswordEncoder passwordEncoder) {
         this.userDao = userDao;
         this.userDaoImp = userDaoImp;
+        this.roleDaoImp = roleDaoImp;
         this.passwordEncoder = passwordEncoder;
     }
 
@@ -49,7 +52,7 @@ public class UserServiceImp implements UserService {
 
     @Override
     public Set<Role> setRolesForUser(String roleAdmin, String roleUser) {
-        return userDaoImp.setRolesForUser(roleAdmin, roleUser);
+        return roleDaoImp.setRolesForUser(roleAdmin, roleUser);
     }
 
     @Override
@@ -64,12 +67,12 @@ public class UserServiceImp implements UserService {
 
     @Override
     public boolean getRoleCheckbox(User user, String role) {
-        return userDaoImp.getRoleCheckbox(user, role);
+        return roleDaoImp.getRoleCheckbox(user, role);
     }
 
     @Override
     public String getProfileRole() {
-        return userDaoImp.getProfileRole();
+        return roleDaoImp.getProfileRole();
     }
 
     @Override
