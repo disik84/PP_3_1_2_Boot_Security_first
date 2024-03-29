@@ -10,23 +10,21 @@ import java.util.List;
 import java.util.Set;
 
 public interface UserService {
-    public List<User> getListUsers();
+    List<User> getListUsers();
 
-    public void addUser(User user);
+    void addUser(User user);
 
-    public void deleteUser(Long id);
+    void deleteUser(Long id);
 
-    public Set<Role> setRolesForUser(String roleAdmin, String roleUser);
+    Set<Role> setRolesForUser(String roleAdmin, String roleUser);
 
-    public User findUserById(Long id);
+    User findUserById(Long id);
 
-    public boolean checkNullEditUser(String id, String username, String password, String email);
+    boolean checkNullEditUser(String id, String username, String password, String email);
 
-    public boolean getRoleCheckbox(User user, String role);
+    String getProfileRole();
 
-    public String getProfileRole();
+    String getPasswordHash(String password);
 
-    public String getPasswordHash(String password);
-
-    public User updateUser(String username, String password, String email, String roleAdmin, String roleUser);
+    User updateUser(String username, String password, String email, String roleAdmin, String roleUser);
 }

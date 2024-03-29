@@ -66,11 +66,6 @@ public class UserServiceImp implements UserService {
     }
 
     @Override
-    public boolean getRoleCheckbox(User user, String role) {
-        return roleDaoImp.getRoleCheckbox(user, role);
-    }
-
-    @Override
     public String getProfileRole() {
         return roleDaoImp.getProfileRole();
     }
