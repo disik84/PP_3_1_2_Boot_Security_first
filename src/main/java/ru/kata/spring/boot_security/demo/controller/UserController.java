@@ -3,6 +3,7 @@ package ru.kata.spring.boot_security.demo.controller;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.GetMapping;
+import ru.kata.spring.boot_security.demo.service.RoleServiceImp;
 import ru.kata.spring.boot_security.demo.service.UserServiceImp;
 
 import java.security.Principal;
@@ -10,8 +11,10 @@ import java.security.Principal;
 @Controller
 public class UserController {
     private final UserServiceImp userServiceImp;
+    private final RoleServiceImp roleServiceImp;
 
-    public UserController(UserServiceImp userServiceImp) {
+    public UserController(UserServiceImp userServiceImp, RoleServiceImp roleServiceImp) {
+        this.roleServiceImp = roleServiceImp;
         this.userServiceImp = userServiceImp;
     }
 
@@ -30,7 +33,7 @@ public class UserController {
     @GetMapping(value = "/user")
     public String getAdminIndexPage(Principal principal, ModelMap model) {
         model.addAttribute("username", principal.getName());
-        model.addAttribute("profileRole", userServiceImp.getProfileRole());
+        model.addAttribute("profileRole", roleServiceImp.getProfileRole());
         model.addAttribute("user", userServiceImp.findByUsername(principal.getName()));
         return "user";
     }

@@ -13,13 +13,9 @@ public interface UserService {
 
     void deleteUser(Long id);
 
-    Set<Role> setRolesForUser(String roleAdmin, String roleUser);
-
     User findUserById(Long id);
 
     boolean checkNullEditUser(String username, String password, String email);
-
-    String getProfileRole();
 
     String getPasswordHash(String password);
 

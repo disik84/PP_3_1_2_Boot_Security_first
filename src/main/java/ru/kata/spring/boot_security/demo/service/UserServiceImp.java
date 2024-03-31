@@ -17,13 +17,13 @@ import java.util.*;
 public class UserServiceImp implements UserService {
     private final UserDao userDao;
     private final UserDaoImp userDaoImp;
-    private final RoleDaoImp roleDaoImp;
+    private final RoleServiceImp roleServiceImp;
     private final PasswordEncoder passwordEncoder;
 
-    public UserServiceImp(UserDao userDao, UserDaoImp userDaoImp, RoleDaoImp roleDaoImp, PasswordEncoder passwordEncoder) {
+    public UserServiceImp(UserDao userDao, UserDaoImp userDaoImp, RoleServiceImp roleServiceImp, PasswordEncoder passwordEncoder) {
         this.userDao = userDao;
         this.userDaoImp = userDaoImp;
-        this.roleDaoImp = roleDaoImp;
+        this.roleServiceImp = roleServiceImp;
         this.passwordEncoder = passwordEncoder;
     }
 
@@ -49,11 +49,6 @@ public class UserServiceImp implements UserService {
     }
 
     @Override
-    public Set<Role> setRolesForUser(String roleAdmin, String roleUser) {
-        return roleDaoImp.setRolesForUser(roleAdmin, roleUser);
-    }
-
-    @Override
     public User findUserById(Long id) {
         return userDao.getById(id);
     }
@@ -61,11 +56,6 @@ public class UserServiceImp implements UserService {
     @Override
     public boolean checkNullEditUser(String username, String password, String email) {
         return userDaoImp.checkNullEditUser(username, password, email);
-    }
-
-    @Override
-    public String getProfileRole() {
-        return roleDaoImp.getProfileRole();
     }
 
     @Override
@@ -84,7 +74,7 @@ public class UserServiceImp implements UserService {
         user.setUsername(username);
         user.setPassword(getPasswordHash(password));
         user.setEmail(email);
-        user.setRoles(setRolesForUser(roleAdmin, roleUser));
+        user.setRoles(roleServiceImp.setRolesForUser(roleAdmin, roleUser));
         return user;
     }
 }
