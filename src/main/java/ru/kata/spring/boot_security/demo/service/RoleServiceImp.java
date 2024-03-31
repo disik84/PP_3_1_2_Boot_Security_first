@@ -26,6 +26,7 @@ public class RoleServiceImp implements RoleService {
     public Set<Role> setRolesForUser(String roleAdmin, String roleUser) {
         return roleDaoImp.setRolesForUser(roleAdmin, roleUser);
     }
+
     @Override
     public String getProfileRole() {
         return roleDaoImp.getProfileRole();
