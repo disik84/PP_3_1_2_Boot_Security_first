@@ -21,12 +21,9 @@ public class RestUserController {
 
     private final UserDao userDao;
 
-    private final UserService userService;
-
-    public RestUserController(UserServiceImp userServiceImp, UserDao userDao, UserService userService) {
+    public RestUserController(UserServiceImp userServiceImp, UserDao userDao) {
         this.userServiceImp = userServiceImp;
         this.userDao = userDao;
-        this.userService = userService;
     }
 
     @GetMapping("/users")
@@ -37,7 +34,7 @@ public class RestUserController {
 
     @GetMapping("/users/{id}")
     public ResponseEntity<User> apiGetOneUser(@PathVariable("id") long id) {
-        User user = userServiceImp.getUserById(id);
+        User user = userServiceImp.findUserById(id);
         return new ResponseEntity<>(user, HttpStatus.OK);
     }
 }
