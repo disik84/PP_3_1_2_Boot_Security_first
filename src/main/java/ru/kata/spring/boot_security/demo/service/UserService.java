@@ -9,15 +9,19 @@ import java.util.Set;
 public interface UserService {
     List<User> getListUsers();
 
+    User getUserById(Long id);
+
+    User findByUsername(String username);
+
     void addUser(User user);
 
     void deleteUser(Long id);
 
-    User getUserById(Long id);
-
     boolean checkNullEditUser(String username, String password, String email);
 
-    String getPasswordHash(String password);
-
     User updateUser(String username, String password, String email, String roleAdmin, String roleUser);
+
+    User setUserForUpdate(String id, String username, String password, String email, String roleAdmin, String roleUser);
+
+    String getPasswordHash(String password);
 }

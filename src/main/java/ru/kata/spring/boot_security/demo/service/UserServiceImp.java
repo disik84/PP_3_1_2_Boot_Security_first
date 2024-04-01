@@ -28,13 +28,18 @@ public class UserServiceImp implements UserService {
     }
 
     @Override
-    public String getPasswordHash(String password) {
-        return passwordEncoder.encode(password);
+    public List<User> getListUsers() {
+        return userDao.findAll();
     }
 
     @Override
-    public List<User> getListUsers() {
-        return userDao.findAll();
+    public User getUserById(Long id) {
+        return userDao.getById(id);
+    }
+
+    @Override
+    public User findByUsername(String username) {
+        return userDao.findByUsername(username);
     }
 
     @Transactional
@@ -49,23 +54,13 @@ public class UserServiceImp implements UserService {
     }
 
     @Override
-    public User getUserById(Long id) {
-        return userDao.getById(id);
-    }
-
-    @Override
     public boolean checkNullEditUser(String username, String password, String email) {
         return userDaoImp.checkNullEditUser(username, password, email);
     }
 
     @Override
-    @Transactional
     public User updateUser(String username, String password, String email, String roleAdmin, String roleUser) {
         return userDaoImp.updateUser(username, password, email, roleAdmin, roleUser);
-    }
-
-    public User findByUsername(String username) {
-        return userDao.findByUsername(username);
     }
 
     public User setUserForUpdate(String id, String username, String password, String email, String roleAdmin, String roleUser) {
@@ -76,5 +71,10 @@ public class UserServiceImp implements UserService {
         user.setEmail(email);
         user.setRoles(roleServiceImp.setRolesForUser(roleAdmin, roleUser));
         return user;
+    }
+
+    @Override
+    public String getPasswordHash(String password) {
+        return passwordEncoder.encode(password);
     }
 }
