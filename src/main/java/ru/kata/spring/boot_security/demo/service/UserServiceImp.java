@@ -59,7 +59,6 @@ public class UserServiceImp implements UserService {
     }
 
     @Override
-    @Transactional
     public User updateUser(String username, String password, String email, String roleAdmin, String roleUser) {
         return userDaoImp.updateUser(username, password, email, roleAdmin, roleUser);
     }
