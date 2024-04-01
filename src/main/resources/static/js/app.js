@@ -117,6 +117,18 @@ async function getDefaultModal() {
 async function editUser(modal, id) {
     let preuser = await userFetchService.findOneUser(id);
     let user = await preuser.json();
+    let roleUser = user.roleUser;
+    if (roleUser === "USER") {
+        roleUser = "checked";
+    } else {
+        roleUser = "";
+    }
+    let roleAdmin = user.roleAdmin;
+    if (roleAdmin === "ADMIN") {
+        roleAdmin = "checked";
+    } else {
+        roleAdmin = "";
+    }
 
     modal.find('.modal-title').html('Edit user');
 
@@ -131,6 +143,10 @@ async function editUser(modal, id) {
             <input class="form-control" type="text" id="username" value="${user.username}"><br>
             <input class="form-control" type="password" id="password"><br>
             <input class="form-control" id="email" type="email" value="${user.email}">
+            <label for="roleUser">User</label> 
+            <input type="checkbox" id="roleUser" ${roleUser}>&nbsp;&nbsp;
+            <label for="roleAdmin">Admin</label> 
+            <input type="checkbox" id="roleAdmin" ${roleAdmin}> 
         </form>`;
     modal.find('.modal-body').append(bodyForm);
     //})
@@ -177,7 +193,7 @@ async function deleteUser(modal, id) {
 
 
 async function addNewUser() {
-    $('#addNewUserButton').click(async () =>  {
+    $('#addNewUserButton').click(async () => {
         let addUserForm = $('#defaultSomeForm')
         let username = addUserForm.find('#AddNewUsername').val().trim();
         let password = addUserForm.find('#AddNewUserPassword').val().trim();

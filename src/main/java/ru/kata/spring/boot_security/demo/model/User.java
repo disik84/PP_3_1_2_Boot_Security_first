@@ -58,6 +58,30 @@ public class User {
         return sb;
     }
 
+    public StringBuilder getRoleUser() {
+        StringBuilder sb = new StringBuilder();
+        Iterator iterator = roles.iterator();
+        while (iterator.hasNext()) {
+            Role role = (Role) iterator.next();
+            if (role.getName().contains("ROLE_USER")) {
+                sb.append("USER");
+            }
+        }
+        return sb;
+    }
+
+    public StringBuilder getRoleAdmin() {
+        StringBuilder sb = new StringBuilder();
+        Iterator iterator = roles.iterator();
+        while (iterator.hasNext()) {
+            Role role = (Role) iterator.next();
+            if (role.getName().contains("ROLE_ADMIN")) {
+                sb.append("ADMIN");
+            }
+        }
+        return sb;
+    }
+
     //Этот метод решил оставить в User, но удалил из UserServiceImp, потому что в шаблоне к нему удобнее обращаться
     //когда он в User
     public boolean getRoleCheckbox(String roleStr) {
