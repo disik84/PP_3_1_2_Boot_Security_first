@@ -35,9 +35,9 @@ public class RestUserController {
         return new ResponseEntity<>(users, HttpStatus.OK);
     }
 
-    /*@GetMapping("/users/{id}")
+    @GetMapping("/users/{id}")
     public ResponseEntity<User> apiGetOneUser(@PathVariable("id") long id) {
-        User user = userDao.findUserById(id);
+        User user = userServiceImp.getUserById(id);
         return new ResponseEntity<>(user, HttpStatus.OK);
-    }*/
+    }
 }

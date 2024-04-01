@@ -49,7 +49,7 @@ public class UserServiceImp implements UserService {
     }
 
     @Override
-    public User findUserById(Long id) {
+    public User getUserById(Long id) {
         return userDao.getById(id);
     }
 
@@ -69,7 +69,7 @@ public class UserServiceImp implements UserService {
     }
 
     public User setUserForUpdate(String id, String username, String password, String email, String roleAdmin, String roleUser) {
-        User user = findUserById(Long.parseLong(id));
+        User user = getUserById(Long.parseLong(id));
         user.setId(Long.parseLong(id));
         user.setUsername(username);
         user.setPassword(getPasswordHash(password));

@@ -14,8 +14,8 @@ const userFetchService = {
     },
     // bodyAdd : async function(user) {return {'method': 'POST', 'headers': this.head, 'body': user}},
     findAllUsers: async () => await fetch('/api/users'),
-    findOneUser: async (id) => await fetch('api/users/${id}'),
-    addNewUser: async (user) => await fetch('api/users', {
+    findOneUser: async (id) => await fetch('/api/users/${id}'),
+    addNewUser: async (user) => await fetch('/api/users', {
         method: 'POST',
         headers: userFetchService.head,
         body: JSON.stringify(user)

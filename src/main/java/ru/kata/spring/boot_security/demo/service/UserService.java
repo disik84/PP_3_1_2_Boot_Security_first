@@ -13,7 +13,7 @@ public interface UserService {
 
     void deleteUser(Long id);
 
-    User findUserById(Long id);
+    User getUserById(Long id);
 
     boolean checkNullEditUser(String username, String password, String email);
 
