@@ -30,24 +30,19 @@
             </div>
 
             <div class="row ml-2">
-                <div class="col-md-2 bg-white text-center p-1 border border-bottom-0">User table</div>
-                <div class="col-md-2 text-center p-1"><a href="/admin/add-user">New user</a></div>
+                <div class="col-md-2 bg-white text-center p-1 border border-bottom-0" id="buttonUserTable">User table</div>
+                <div class="col-md-2 text-center p-1" id="buttonNewUser"><a href="javascript:void(0);">New user</a></div>
             </div>
 
-            <div class="row ml-2 mr-2 bg-white">
-                <div class="col-md-12 border">
+            <div class="row ml-2 mr-2 bg-white" id="mainContent">
+                <div class="col-md-12 border wrapper">
 
                     <div class="row  bg-light border-bottom">
                         <h4 class="col-md-12 pt-2 ">All users</h4>
                     </div>
 
-                    <div class="row border-top mt-3 ml-1 mr-1">
-                        <div class="col-md-1 pt-2 pb-2"><strong>ID</strong></div>
-                        <div class="col-md-2 pt-2 pb-2"><strong>Username</strong></div>
-                        <div class="col-md-4 pt-2 pb-2"><strong>Email</strong></div>
-                        <div class="col-md-2 pt-2 pb-2"><strong>Role</strong></div>
-                        <div class="col-md-1 pt-2 pb-2"><strong>Edit</strong></div>
-                        <div class="col-md-2 pt-2 pb-2"><strong>Delete</strong></div>
+                    <div class="row ml-1 mr-1" id="headTable">
+
                     </div>
 
                     <div class="row border-top ml-1 mr-1" id="mainTableWithUsers">

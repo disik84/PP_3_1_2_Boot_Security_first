@@ -31,7 +31,15 @@ const userFetchService = {
 async function getTableWithUsers() {
     let div = $('#mainTableWithUsers');
     div.empty();
-
+    let headTable = `
+        <div class="col-md-1 pt-2 pb-2"><strong>ID</strong></div>
+        <div class="col-md-2 pt-2 pb-2"><strong>Username</strong></div>
+        <div class="col-md-4 pt-2 pb-2"><strong>Email</strong></div>
+        <div class="col-md-2 pt-2 pb-2"><strong>Role</strong></div>
+        <div class="col-md-1 pt-2 pb-2"><strong>Edit</strong></div>
+        <div class="col-md-2 pt-2 pb-2"><strong>Delete</strong></div> 
+    `;
+    $('#headTable').append(headTable);
     await userFetchService.findAllUsers()
         .then(res => res.json())
         .then(users => {
@@ -210,33 +218,49 @@ async function deleteUser(modal, id) {
     modal.find('.modal-footer').append(closeButton);
 }
 
-
 async function addNewUser() {
-    $('#addNewUserButton').click(async () => {
-        let addUserForm = $('#defaultSomeForm')
-        let username = addUserForm.find('#AddNewUsername').val().trim();
-        let password = addUserForm.find('#AddNewUserPassword').val().trim();
-        let email = addUserForm.find('#AddNewEmail').val().trim();
-        let data = {
-            login: login,
-            password: password,
-            email: email
-        }
-        const response = await userFetchService.addNewUser(data);
-        if (response.ok) {
-            getTableWithUsers();
-            addUserForm.find('#AddNewUsername').val('');
-            addUserForm.find('#AddNewUserPassword').val('');
-            addUserForm.find('#AddNewEmail').val('');
-        } else {
-            let body = await response.json();
-            let alert = `<div class="alert alert-danger alert-dismissible fade show col-12" role="alert" id="sharaBaraMessageError">
-                            ${body.info}
-                            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                                <span aria-hidden="true">&times;</span>
-                            </button>
-                        </div>`;
-            addUserForm.prepend(alert)
-        }
+    $('#buttonNewUser').click(async () => {
+        let div = $('#mainTableWithUsers');
+        let tableNewUser = `
+            <form action="/admin/show-info-new-user" class="w-100" method="POST">
+                <div class="col-md-12 pt-3 pb-2">
+                    <label for="username"><b>Username</b></label><br/>
+                    <input class="bg-warning" type="text" id="username" name="username" required/>
+                </div>
+                <div class="col-md-12 pt-2 pb-2">
+                    <label for="password"><b>Password</b></label><br/>
+                    <input class="bg-warning" type="password" id="password" name="password" required/>
+                </div>
+                <div class="col-md-12 pt-2 pb-2">
+                    <label for="email"><b>E-mail</b></label><br/>
+                    <input class="bg-warning" type="email" id="email" name="email" required/>
+                </div>
+                <div class="col-md-12 pt-2 pb-2">
+                    <label><b>Role</b></label><br/>
+                    <label for="roleUser">user</label>
+                    <input type="checkbox" id="roleUser" name="roleUser">
+                    <label for="roleAdmin">admin</label>
+                    <input type="checkbox" id="roleAdmin" name="roleAdmin">
+                </div>
+                <div class="col-md-12 pt-2 pb-3">
+                    <button type="submit" class="btn btn-success">Add new user</button>
+                </div>
+            </form>            
+        `;
+        $('#mainContent h4').empty().append("New user");
+        $('#headTable').empty().removeClass("border-top");
+        $('#buttonUserTable').empty().append("<a href='javascript:void(0);'>User table</a>").removeClass("bg-white border");
+        $('#buttonNewUser').empty().append("New user").addClass("bg-white border border-bottom-0");
+        $('#mainTableWithUsers').removeClass("border-top").addClass("text-center");
+
+        div.empty();
+        div.append(tableNewUser);
     })
 }
+$('#buttonUserTable').click(async () => {
+    getTableWithUsers();
+    $('#mainContent h4').empty().append("All users");
+    $('#buttonNewUser').empty().append("<a href='javascript:void(0);'>New user</a>").removeClass("bg-white border");
+    $('#buttonUserTable').empty().append("User table").addClass("bg-white border border-bottom-0");
+    $('#mainTableWithUsers').addClass("border-top").removeClass("text-center");
+})
