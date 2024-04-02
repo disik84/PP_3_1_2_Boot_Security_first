@@ -42,8 +42,14 @@ public class RestUserController {
     @PutMapping("/users/{id}")
     public ResponseEntity<User> apiPutUser(@PathVariable("id") long id,
                                            @RequestBody User user) {
-        System.out.println(user);
+        user.setPassword(userServiceImp.getPasswordHash(user.getPassword()));
         userServiceImp.addUser(user);
         return new ResponseEntity<>(user, HttpStatus.OK);
+    }
+    @DeleteMapping("/users/{id}")
+    public ResponseEntity<User> apiDeleteUser(@PathVariable("id") long id) {
+        System.out.println(id);
+        userServiceImp.deleteUser(id);
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 }
