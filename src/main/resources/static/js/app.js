@@ -39,7 +39,7 @@ async function getTableWithUsers() {
         <div class="col-md-2 pt-2 pb-2"><strong>Edit</strong></div>
         <div class="col-md-2 pt-2 pb-2"><strong>Delete</strong></div> 
     `;
-    $('#headTable').append(headTable);
+    $('#headTable').empty().append(headTable);
     await userFetchService.findAllUsers()
         .then(res => res.json())
         .then(users => {
