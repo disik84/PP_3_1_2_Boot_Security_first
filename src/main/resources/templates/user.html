@@ -9,7 +9,7 @@
     <title>User page</title>
 </head>
 <body>
-<div class="container">
+<div class="container-fluid">
     <div class="row bg-dark p-2">
         <div class="col-md-10 text-light"><strong th:text="${username}"/> with roles: <span th:text="${profileRole}"/>
         </div>
@@ -38,15 +38,15 @@
 
                     <div class="row border-top mt-3 ml-1 mr-1">
                         <div class="col-md-1 pt-2 pb-2"><strong>ID</strong></div>
-                        <div class="col-md-4 pt-2 pb-2"><strong>Username</strong></div>
-                        <div class="col-md-4 pt-2 pb-2"><strong>Email</strong></div>
+                        <div class="col-md-3 pt-2 pb-2"><strong>Username</strong></div>
+                        <div class="col-md-5 pt-2 pb-2"><strong>Email</strong></div>
                         <div class="col-md-3 pt-2 pb-2"><strong>Role</strong></div>
                     </div>
 
                     <div class="row border-top ml-1 mr-1">
                         <div class="col-md-1 pt-2 pb-2" th:text="${user.getId()}">1</div>
-                        <div class="col-md-4 pt-2 pb-2" th:text="${user.getUsername()}">Username</div>
-                        <div class="col-md-4 pt-2 pb-2" th:text="${user.getEmail()}">Email</div>
+                        <div class="col-md-3 pt-2 pb-2" th:text="${user.getUsername()}">Username</div>
+                        <div class="col-md-5 pt-2 pb-2" th:text="${user.getEmail()}">Email</div>
                         <div class="col-md-3 pt-2 pb-2" th:text="${user.getSimpleRoles()}"></div>
                     </div>
 

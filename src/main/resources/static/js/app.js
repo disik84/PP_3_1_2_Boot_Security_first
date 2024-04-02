@@ -34,9 +34,9 @@ async function getTableWithUsers() {
     let headTable = `
         <div class="col-md-1 pt-2 pb-2"><strong>ID</strong></div>
         <div class="col-md-2 pt-2 pb-2"><strong>Username</strong></div>
-        <div class="col-md-4 pt-2 pb-2"><strong>Email</strong></div>
+        <div class="col-md-3 pt-2 pb-2"><strong>Email</strong></div>
         <div class="col-md-2 pt-2 pb-2"><strong>Role</strong></div>
-        <div class="col-md-1 pt-2 pb-2"><strong>Edit</strong></div>
+        <div class="col-md-2 pt-2 pb-2"><strong>Edit</strong></div>
         <div class="col-md-2 pt-2 pb-2"><strong>Delete</strong></div> 
     `;
     $('#headTable').append(headTable);
@@ -46,11 +46,11 @@ async function getTableWithUsers() {
             users.forEach(user => {
                 let tableFilling = "" +
                     "<div class='col-md-1 pt-2 pb-2'>" + user.id + "</div>" +
-                    "<div class='col-md-2 pt-2 pb-2'>" + user.username + "</div>" +
-                    "<div class='col-md-4 pt-2 pb-2'>" + user.email + "</div>" +
+                    "<div class='col-md-2 pt-2 pb-2 text-truncate'>" + user.username + "</div>" +
+                    "<div class='col-md-3 pt-2 pb-2 text-truncate'>" + user.email + "</div>" +
                     "<div class='col-md-2 pt-2 pb-2'>" + user.simpleRoles + "</div>" +
 
-                    "<div class='col-md-1 pt-2 pb-2'><button type='button' class='btn btn-info' data-userid='" +
+                    "<div class='col-md-2 pt-2 pb-2'><button type='button' class='btn btn-info' data-userid='" +
                     user.id + "' data-action='edit'  data-toggle='modal' data-target='#someDefaultModal'>Edit</button></div>" +
 
                     "<div class='col-md-2 pt-2 pb-2'><button type='button' class='btn btn-danger' data-userid='" +
