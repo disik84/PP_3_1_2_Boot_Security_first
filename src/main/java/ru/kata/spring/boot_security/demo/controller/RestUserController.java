@@ -48,8 +48,12 @@ public class RestUserController {
     }
     @DeleteMapping("/users/{id}")
     public ResponseEntity<User> apiDeleteUser(@PathVariable("id") long id) {
-        System.out.println(id);
         userServiceImp.deleteUser(id);
         return new ResponseEntity<>(HttpStatus.OK);
+    }
+    @PostMapping("/users")
+    public ResponseEntity<User> apiAddUser(@RequestBody User user) {
+        userServiceImp.addUser(user);
+        return new ResponseEntity<>(user, HttpStatus.OK);
     }
 }

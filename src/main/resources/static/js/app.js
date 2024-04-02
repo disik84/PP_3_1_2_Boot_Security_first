@@ -2,7 +2,7 @@ $(async function () {
     await getTableWithUsers();
     getNewUserForm();
     getDefaultModal();
-    addNewUser();
+    getNewUserForm();
 })
 
 
@@ -76,7 +76,7 @@ async function getTableWithUsers() {
 }
 
 
-async function getNewUserForm() {
+/*async function getNewUserForm() {
     let button = $(`#SliderNewUserForm`);
     let form = $(`#defaultSomeForm`)
     button.on('click', () => {
@@ -90,7 +90,7 @@ async function getNewUserForm() {
             button.text('Show panel');
         }
     })
-}
+}*/
 
 
 // что то деалем при открытии модалки и при закрытии
@@ -218,7 +218,7 @@ async function deleteUser(modal, id) {
     modal.find('.modal-footer').append(closeButton);
 }
 
-async function addNewUser() {
+async function getNewUserForm() {
     $('#buttonNewUser').click(async () => {
         let div = $('#mainTableWithUsers');
         let tableNewUser = `
@@ -243,7 +243,7 @@ async function addNewUser() {
                     <input type="checkbox" id="roleAdmin" name="roleAdmin">
                 </div>
                 <div class="col-md-12 pt-2 pb-3">
-                    <button type="submit" class="btn btn-success">Add new user</button>
+                    <button type="submit" class="btn btn-success" id ="buttonAddNewUser">Add new user</button>
                 </div>
             </form>            
         `;
@@ -255,6 +255,36 @@ async function addNewUser() {
 
         div.empty();
         div.append(tableNewUser);
+    })
+    $('#buttonAddNewUser').click(async () => {
+        let username = modal.find("#username").val().trim();
+        let password = modal.find("#password").val().trim();
+        let email = modal.find("#email").val().trim();
+
+        let role = [];
+        if ($('#roleUser').prop('checked')) {
+            let roleUser = {
+                id: 1,
+                name: "ROLE_USER",
+            };
+            role.push(roleUser)
+        }
+
+        if ($('#roleAdmin').prop('checked')) {
+            let roleAdmin = {
+                id: 2,
+                name: "ROLE_ADMIN",
+            };
+            role.push(roleAdmin)
+        }
+
+        let user = {
+            username: username,
+            password: password,
+            email: email,
+            roles: role
+        }
+        const response = await userFetchService.addNewUser(user);
     })
 }
 $('#buttonUserTable').click(async () => {
