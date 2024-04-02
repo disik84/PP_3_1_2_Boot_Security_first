@@ -12,7 +12,6 @@ const userFetchService = {
         'Content-Type': 'application/json',
         'Referer': null
     },
-    // bodyAdd : async function(user) {return {'method': 'POST', 'headers': this.head, 'body': user}},
     findAllUsers: async () => await fetch('/api/users'),
     findOneUser: async (id) => await fetch('api/users/' + id),
     addNewUser: async (user) => await fetch('/api/users', {
@@ -49,10 +48,8 @@ async function getTableWithUsers() {
                     "<div class='col-md-2 pt-2 pb-2 text-truncate'>" + user.username + "</div>" +
                     "<div class='col-md-3 pt-2 pb-2 text-truncate'>" + user.email + "</div>" +
                     "<div class='col-md-2 pt-2 pb-2'>" + user.simpleRoles + "</div>" +
-
                     "<div class='col-md-2 pt-2 pb-2'><button type='button' class='btn btn-info' data-userid='" +
                     user.id + "' data-action='edit'  data-toggle='modal' data-target='#someDefaultModal'>Edit</button></div>" +
-
                     "<div class='col-md-2 pt-2 pb-2'><button type='button' class='btn btn-danger' data-userid='" +
                     user.id + "' data-action='delete' data-toggle='modal' data-target='#someDefaultModal'>Delete</button></div>";
                 div.append(tableFilling);
@@ -74,24 +71,6 @@ async function getTableWithUsers() {
         defaultModal.modal('show');
     })
 }
-
-
-/*async function getNewUserForm() {
-    let button = $(`#SliderNewUserForm`);
-    let form = $(`#defaultSomeForm`)
-    button.on('click', () => {
-        if (form.attr("data-hidden") === "true") {
-            form.attr('data-hidden', 'false');
-            form.show();
-            button.text('Hide panel');
-        } else {
-            form.attr('data-hidden', 'true');
-            form.hide();
-            button.text('Show panel');
-        }
-    })
-}*/
-
 
 // что то деалем при открытии модалки и при закрытии
 // основываясь на ее дата атрибутах
@@ -119,7 +98,6 @@ async function getDefaultModal() {
         thisModal.find('.modal-footer').html('');
     })
 }
-
 
 // редактируем юзера из модалки редактирования, забираем данные, отправляем
 async function editUser(modal, id) {
@@ -181,7 +159,6 @@ async function editUser(modal, id) {
             };
             role.push(roleAdmin)
         }
-
         let data = {
             id: id,
             username: username,
@@ -206,7 +183,6 @@ async function editUser(modal, id) {
         }
     })
 }
-
 
 // удаляем юзера из модалки удаления
 async function deleteUser(modal, id) {
@@ -287,6 +263,7 @@ async function getNewUserForm() {
         const response = await userFetchService.addNewUser(user);
     })
 }
+
 $('#buttonUserTable').click(async () => {
     getTableWithUsers();
     $('#mainContent h4').empty().append("All users");
