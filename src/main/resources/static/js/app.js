@@ -20,10 +20,10 @@ const userFetchService = {
         headers: userFetchService.head,
         body: JSON.stringify(user)
     }),
-    updateUser: async (user, id) => await fetch('/api/users/${id}', {
+    updateUser: async (user, id) => await fetch(`/api/users/${id}`, {
         method: 'PUT',
         headers: userFetchService.head,
-        body: JSON.stringify(user)
+        body: JSON.stringify(user, id)
     }),
     deleteUser: async (id) => await fetch('/api/users/${id}', {method: 'DELETE', headers: userFetchService.head})
 }
@@ -156,13 +156,61 @@ async function editUser(modal, id) {
         let username = modal.find("#username").val().trim();
         let password = modal.find("#password").val().trim();
         let email = modal.find("#email").val().trim();
+
+        let roleUser;
+        if ($('#roleUser').prop('checked')) {
+            roleUser = {
+                id: 1,
+                name: "ROLE_USER",
+            };
+        } else {
+            roleUser = null;
+        }
+        let roleAdmin;
+        if ($('#roleAdmin').prop('checked')) {
+            roleAdmin = {
+                id: 2,
+                name: "ROLE_ADMIN",
+            };
+        } else {
+            roleAdmin = null;
+        }
+        let roles = {
+            roleUser: roleUser,
+            roleAdmin: roleAdmin
+        };
         let data = {
             id: id,
             username: username,
             password: password,
-            email: email
+            email: email,
+            roles: [roleUser, roleAdmin]
         }
         const response = await userFetchService.updateUser(data, id);
+
+        /*let roleUser;
+        if ($('#roleUser').prop('checked')) {
+            roleUser = {id: 1,
+                        name: "ROLE_USER"};
+        } else {
+            roleUser = null;
+        }
+        if ($('#roleAdmin').prop('checked')) {
+            roleUser = {id: 2,
+                name: "ROLE_ADMIN"};
+        } else {
+            roleUser = null;
+        }
+        let roles = {roleUser, roleAdmin};
+        let data = {
+            id: id,
+            username: username,
+            password: password,
+            email: email,
+            roles: roles
+        }
+        const response = await userFetchService.updateUser(data, id);*/
+
 
         if (response.ok) {
             getTableWithUsers();

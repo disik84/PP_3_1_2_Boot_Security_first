@@ -1,5 +1,7 @@
 package ru.kata.spring.boot_security.demo.model;
 
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import lombok.Data;
 import ru.kata.spring.boot_security.demo.security.SecurityUserDetails;
 
@@ -22,6 +24,13 @@ public class User {
     private String email;
 
     @ManyToMany(fetch = FetchType.EAGER)
+    @JoinTable(name = "users_roles",
+            joinColumns = {@JoinColumn(name = "user_id")},
+            inverseJoinColumns = @JoinColumn(name = "role_id"))
+    @JsonIdentityInfo(
+            generator = ObjectIdGenerators.PropertyGenerator.class,
+            property = "id"
+    )
     private Set<Role> roles;
 
     private SecurityUserDetails securityUserDetails;

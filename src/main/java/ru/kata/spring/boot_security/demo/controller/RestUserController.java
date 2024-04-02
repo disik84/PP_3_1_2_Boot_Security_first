@@ -9,6 +9,7 @@ import ru.kata.spring.boot_security.demo.model.User;
 import ru.kata.spring.boot_security.demo.service.UserService;
 import ru.kata.spring.boot_security.demo.service.UserServiceImp;
 
+import javax.validation.Valid;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -35,6 +36,14 @@ public class RestUserController {
     @GetMapping("/users/{id}")
     public ResponseEntity<User> apiGetOneUser(@PathVariable("id") long id) {
         User user = userServiceImp.findUserById(id);
+        return new ResponseEntity<>(user, HttpStatus.OK);
+    }
+
+    @PutMapping("/users/{id}")
+    public ResponseEntity<User> apiPutUser(@PathVariable("id") long id,
+                                           @RequestBody User user) {
+        System.out.println(user);
+        userServiceImp.addUser(user);
         return new ResponseEntity<>(user, HttpStatus.OK);
     }
 }
