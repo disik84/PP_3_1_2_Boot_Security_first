@@ -265,6 +265,7 @@ async function getNewUserForm() {
         })
     })
 }
+
 $('#buttonUserTable').click(async () => {
     getTableWithUsers();
 })
