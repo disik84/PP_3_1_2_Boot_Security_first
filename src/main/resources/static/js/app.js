@@ -92,7 +92,7 @@ async function getDefaultModal() {
                 editUser(thisModal, userid);
                 break;
             case 'delete':
-                deleteUser(thisModal, userid);
+                deleteUserForm(thisModal, userid);
                 break;
         }
     }).on("hidden.bs.modal", (e) => {
@@ -147,10 +147,14 @@ async function editUser(modal, id) {
 
     let bodyForm = `<form class="form-group mb-0" id="editUser">
             <input type="hidden" class="form-control bg-warning" id="id" name="id" value="${user.id}" disabled><br>
+            <label for="username"><strong>Username</strong></label>
             <input class="form-control bg-warning" type="text" id="username" value="${user.username}"><br>
+            <label for="password"><strong>Password</strong></label>
             <input class="form-control bg-warning" type="password" id="password"><br>
+            <label for="email"><strong>Email</strong></label>
             <input class="form-control bg-warning" id="email" type="email" value="${user.email}">
             <div class="pt-4 text-center">
+                <label for="roles"><strong>Roles:</strong></label>
                 <label for="roleUser">User</label> 
                 <input type="checkbox" id="roleUser" ${roleUser}>&nbsp;&nbsp;
                 <label for="roleAdmin">Admin</label> 
@@ -190,13 +194,37 @@ async function editUser(modal, id) {
 }
 
 // удаляем юзера из модалки удаления
-async function deleteUser(modal, id) {
-    await userFetchService.deleteUser(id);
-    getTableWithUsers();
-    modal.find('.modal-title').html('Info');
-    modal.find('.modal-body').html('User was deleted');
-    let closeButton = `<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>`
+async function deleteUserForm(modal, id) {
+    //await userFetchService.deleteUser(id);
+    let preuser = await userFetchService.findOneUser(id);
+    let user = await preuser.json();
+    let roles = user.simpleRoles;
+
+    let bodyForm = `<form class="form-group mb-0 mt-0" id="deleteUser">
+            <input type="hidden" class="form-control bg-warning" id="id" name="id" value="${user.id}" disabled>
+            <label for="username"><strong>Username</strong></label>
+            <input class="form-control" type="text" id="username" value="${user.username}" disabled><br>
+            <label for="email"><strong>Email</strong></label>
+            <input class="form-control" id="email" type="email" value="${user.email}" disabled><br>
+            <label for="roles"><strong>Roles</strong></label>
+            <input class="form-control" id="roles" type="text" value="${user.simpleRoles}" disabled>
+        </form>`;
+    let deleteButton = `<button  class="btn btn-outline-success bg-primary text-white" id="deleteButton">Delete</button>`;
+    let closeButton = `<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>`;
+    //getTableWithUsers();
+    modal.find('.modal-title').html('Delete user');
+    modal.find('.modal-body').append(bodyForm);
+    modal.find('.modal-footer').append(deleteButton);
     modal.find('.modal-footer').append(closeButton);
+
+    $("#deleteButton").on('click', async () => {
+        let id = modal.find("#id").val().trim();
+        const response = await userFetchService.deleteUser(id);
+        if (response.ok) {
+            getTableWithUsers();
+            modal.modal('hide');
+        }
+    })
 }
 
 async function getNewUserForm() {
