@@ -1,5 +1,6 @@
 package ru.kata.spring.boot_security.demo.controller;
 
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -10,6 +11,7 @@ import ru.kata.spring.boot_security.demo.service.UserService;
 import ru.kata.spring.boot_security.demo.service.UserServiceImp;
 
 import javax.validation.Valid;
+import java.sql.SQLIntegrityConstraintViolationException;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -40,8 +42,11 @@ public class RestUserController {
     }
 
     @PutMapping("/users/{id}")
-    public ResponseEntity<User> apiPutUser(@PathVariable("id") long id,
+    public ResponseEntity<User> apiEditUser(@PathVariable("id") long id,
                                            @RequestBody User user) {
+        if (userServiceImp.checkNullEditUser(user.getUsername(),user.getPassword(), user.getEmail()) == false) {
+            return new ResponseEntity<>(user, HttpStatus.BAD_REQUEST);
+        }
         user.setPassword(userServiceImp.getPasswordHash(user.getPassword()));
         userServiceImp.addUser(user);
         return new ResponseEntity<>(user, HttpStatus.OK);
@@ -53,7 +58,12 @@ public class RestUserController {
     }
     @PostMapping("/users")
     public ResponseEntity<User> apiAddUser(@RequestBody User user) {
-        userServiceImp.addUser(user);
+        user.setPassword(userServiceImp.getPasswordHash(user.getPassword()));
+        try {
+            userServiceImp.addUser(user);
+        } catch (DataIntegrityViolationException e) {
+            return new ResponseEntity<>(user, HttpStatus.BAD_REQUEST);
+        }
         return new ResponseEntity<>(user, HttpStatus.OK);
     }
 }

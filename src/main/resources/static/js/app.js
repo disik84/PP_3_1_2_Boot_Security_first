@@ -30,6 +30,10 @@ const userFetchService = {
 async function getTableWithUsers() {
     let div = $('#mainTableWithUsers');
     div.empty();
+    $('#mainContent h4').empty().append("All users");
+    $('#buttonNewUser').empty().append("<a href='javascript:void(0);'>New user</a>").removeClass("bg-white border");
+    $('#buttonUserTable').empty().append("User table").addClass("bg-white border border-bottom-0");
+    $('#mainTableWithUsers').addClass("border-top").removeClass("text-center");
     let headTable = `
         <div class="col-md-1 pt-2 pb-2"><strong>ID</strong></div>
         <div class="col-md-2 pt-2 pb-2"><strong>Username</strong></div>
@@ -118,21 +122,23 @@ async function editUser(modal, id) {
 
     modal.find('.modal-title').html('Edit user');
 
-    let editButton = `<button  class="btn btn-outline-success" id="editButton">Edit</button>`;
+    let editButton = `<button  class="btn btn-outline-success bg-primary text-white" id="editButton">Edit</button>`;
     let closeButton = `<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>`
-    modal.find('.modal-footer').append(editButton);
     modal.find('.modal-footer').append(closeButton);
+    modal.find('.modal-footer').append(editButton);
 
     //user.then(user => {
-    let bodyForm = `<form class="form-group" id="editUser">
-            <input type="text" class="form-control" id="id" name="id" value="${user.id}" disabled><br>
+    let bodyForm = `<form class="form-group mb-0" id="editUser">
+            <input type="hidden" class="form-control bg-warning" id="id" name="id" value="${user.id}" disabled><br>
             <input class="form-control" type="text" id="username" value="${user.username}"><br>
             <input class="form-control" type="password" id="password"><br>
             <input class="form-control" id="email" type="email" value="${user.email}">
-            <label for="roleUser">User</label> 
-            <input type="checkbox" id="roleUser" ${roleUser}>&nbsp;&nbsp;
-            <label for="roleAdmin">Admin</label> 
-            <input type="checkbox" id="roleAdmin" ${roleAdmin}> 
+            <div class="pt-4 text-center">
+                <label for="roleUser">User</label> 
+                <input type="checkbox" id="roleUser" ${roleUser}>&nbsp;&nbsp;
+                <label for="roleAdmin">Admin</label> 
+                <input type="checkbox" id="roleAdmin" ${roleAdmin}> 
+            </div>    
         </form>`;
     modal.find('.modal-body').append(bodyForm);
     //})
@@ -172,14 +178,7 @@ async function editUser(modal, id) {
             getTableWithUsers();
             modal.modal('hide');
         } else {
-            let body = await response.json();
-            let alert = `<div class="alert alert-danger alert-dismissible fade show col-12" role="alert" id="sharaBaraMessageError">
-                            ${body.info}
-                            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                                <span aria-hidden="true">&times;</span>
-                            </button>
-                        </div>`;
-            modal.find('.modal-body').prepend(alert);
+            alert("Ошибка: " + response.status);
         }
     })
 }
@@ -198,7 +197,7 @@ async function getNewUserForm() {
     $('#buttonNewUser').click(async () => {
         let div = $('#mainTableWithUsers');
         let tableNewUser = `
-            <form action="/admin/show-info-new-user" class="w-100" method="POST">
+            <form class="w-100" id="newUserForm">
                 <div class="col-md-12 pt-3 pb-2">
                     <label for="username"><b>Username</b></label><br/>
                     <input class="bg-warning" type="text" id="username" name="username" required/>
@@ -218,10 +217,10 @@ async function getNewUserForm() {
                     <label for="roleAdmin">admin</label>
                     <input type="checkbox" id="roleAdmin" name="roleAdmin">
                 </div>
-                <div class="col-md-12 pt-2 pb-3">
-                    <button type="submit" class="btn btn-success" id ="buttonAddNewUser">Add new user</button>
-                </div>
-            </form>            
+            </form>   
+            <div class="col-md-12 pt-2 pb-3">
+                <button type="button" class="btn btn-success" id ="buttonAddNewUser">Add new user</button>
+            </div>                    
         `;
         $('#mainContent h4').empty().append("New user");
         $('#headTable').empty().removeClass("border-top");
@@ -231,43 +230,45 @@ async function getNewUserForm() {
 
         div.empty();
         div.append(tableNewUser);
-    })
-    $('#buttonAddNewUser').click(async () => {
-        let username = modal.find("#username").val().trim();
-        let password = modal.find("#password").val().trim();
-        let email = modal.find("#email").val().trim();
 
-        let role = [];
-        if ($('#roleUser').prop('checked')) {
-            let roleUser = {
-                id: 1,
-                name: "ROLE_USER",
-            };
-            role.push(roleUser)
-        }
+        $("#buttonAddNewUser").on('click', async () => {
+            let newUserForm = "newUserForm";
+            let username = $('#newUserForm').find("#username").val().trim();
+            let password = $('#newUserForm').find("#password").val().trim();
+            let email = $('#newUserForm').find("#email").val().trim();
+            let role = [];
+            if ($('#roleUser').prop('checked')) {
+                let roleUser = {
+                    id: 1,
+                    name: "ROLE_USER",
+                };
+                role.push(roleUser)
+            }
 
-        if ($('#roleAdmin').prop('checked')) {
-            let roleAdmin = {
-                id: 2,
-                name: "ROLE_ADMIN",
-            };
-            role.push(roleAdmin)
-        }
+            if ($('#roleAdmin').prop('checked')) {
+                let roleAdmin = {
+                    id: 2,
+                    name: "ROLE_ADMIN",
+                };
+                role.push(roleAdmin)
+            }
 
-        let user = {
-            username: username,
-            password: password,
-            email: email,
-            roles: role
-        }
-        const response = await userFetchService.addNewUser(user);
+            let user = {
+                username: username,
+                password: password,
+                email: email,
+                roles: role
+            }
+            const response = await userFetchService.addNewUser(user);
+            if (response.ok) {
+                getTableWithUsers();
+            } else {
+                let body = await response.json();
+                alert("Ошибка: " + response.status);
+            }
+        })
     })
 }
-
 $('#buttonUserTable').click(async () => {
     getTableWithUsers();
-    $('#mainContent h4').empty().append("All users");
-    $('#buttonNewUser').empty().append("<a href='javascript:void(0);'>New user</a>").removeClass("bg-white border");
-    $('#buttonUserTable').empty().append("User table").addClass("bg-white border border-bottom-0");
-    $('#mainTableWithUsers').addClass("border-top").removeClass("text-center");
 })
