@@ -145,7 +145,6 @@ async function editUser(modal, id) {
     modal.find('.modal-footer').append(closeButton);
     modal.find('.modal-footer').append(editButton);
 
-    //user.then(user => {
     let bodyForm = `<form class="form-group mb-0" id="editUser">
             <input type="hidden" class="form-control bg-warning" id="id" name="id" value="${user.id}" disabled><br>
             <input class="form-control bg-warning" type="text" id="username" value="${user.username}"><br>
@@ -159,7 +158,6 @@ async function editUser(modal, id) {
             </div>    
         </form>`;
     modal.find('.modal-body').append(bodyForm);
-    //})
 
     $("#editButton").on('click', async () => {
         let id = modal.find("#id").val().trim();
