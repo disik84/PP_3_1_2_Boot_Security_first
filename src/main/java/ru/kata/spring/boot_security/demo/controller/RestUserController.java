@@ -44,12 +44,16 @@ public class RestUserController {
     @PutMapping("/users/{id}")
     public ResponseEntity<User> apiEditUser(@PathVariable("id") long id,
                                            @RequestBody User user) {
-        if (userServiceImp.checkNullEditUser(user.getUsername(),user.getPassword(), user.getEmail()) == false) {
-            return new ResponseEntity<>(user, HttpStatus.BAD_REQUEST);
-        }
-        user.setPassword(userServiceImp.getPasswordHash(user.getPassword()));
+    if (userServiceImp.checkNullEditUser(user.getUsername(),user.getPassword(), user.getEmail()) == false) {
+        return new ResponseEntity<>(user, HttpStatus.BAD_REQUEST);
+    }
+    user.setPassword(userServiceImp.getPasswordHash(user.getPassword()));
+    try {
         userServiceImp.addUser(user);
-        return new ResponseEntity<>(user, HttpStatus.OK);
+    } catch (DataIntegrityViolationException e) {
+        return new ResponseEntity<>(user, HttpStatus.CONFLICT);
+    }
+    return new ResponseEntity<>(user, HttpStatus.OK);
     }
     @DeleteMapping("/users/{id}")
     public ResponseEntity<User> apiDeleteUser(@PathVariable("id") long id) {
@@ -58,11 +62,14 @@ public class RestUserController {
     }
     @PostMapping("/users")
     public ResponseEntity<User> apiAddUser(@RequestBody User user) {
+        if (userServiceImp.checkNullEditUser(user.getUsername(),user.getPassword(), user.getEmail()) == false) {
+            return new ResponseEntity<>(user, HttpStatus.BAD_REQUEST);
+        }
         user.setPassword(userServiceImp.getPasswordHash(user.getPassword()));
         try {
             userServiceImp.addUser(user);
         } catch (DataIntegrityViolationException e) {
-            return new ResponseEntity<>(user, HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>(user, HttpStatus.CONFLICT);
         }
         return new ResponseEntity<>(user, HttpStatus.OK);
     }

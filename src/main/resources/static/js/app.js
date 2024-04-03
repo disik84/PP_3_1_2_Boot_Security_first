@@ -148,9 +148,9 @@ async function editUser(modal, id) {
     //user.then(user => {
     let bodyForm = `<form class="form-group mb-0" id="editUser">
             <input type="hidden" class="form-control bg-warning" id="id" name="id" value="${user.id}" disabled><br>
-            <input class="form-control" type="text" id="username" value="${user.username}"><br>
-            <input class="form-control" type="password" id="password"><br>
-            <input class="form-control" id="email" type="email" value="${user.email}">
+            <input class="form-control bg-warning" type="text" id="username" value="${user.username}"><br>
+            <input class="form-control bg-warning" type="password" id="password"><br>
+            <input class="form-control bg-warning" id="email" type="email" value="${user.email}">
             <div class="pt-4 text-center">
                 <label for="roleUser">User</label> 
                 <input type="checkbox" id="roleUser" ${roleUser}>&nbsp;&nbsp;
@@ -183,8 +183,10 @@ async function editUser(modal, id) {
         if (response.ok) {
             getTableWithUsers();
             modal.modal('hide');
-        } else {
-            alert("Ошибка: " + response.status);
+        } else if (response.status === 400) {
+            alert("Для сохранения заполните все обязательные поля");
+        } else if (response.status === 409) {
+            alert("Имя пользователя занято");
         }
     })
 }
@@ -255,9 +257,10 @@ async function getNewUserForm() {
             const response = await userFetchService.addNewUser(user);
             if (response.ok) {
                 getTableWithUsers();
-            } else {
-                let body = await response.json();
-                alert("Ошибка: " + response.status);
+            } else if (response.status === 409) {
+                alert("Такой пользователь уже существует");
+            } else if (response.status === 400) {
+                alert("Заполните все обязательные поля");
             }
         })
     })
