@@ -201,6 +201,7 @@ async function deleteUser(modal, id) {
     modal.find('.modal-footer').append(closeButton);
 }
 
+
 async function getNewUserForm() {
     $('#buttonNewUser').click(async () => {
         let div = $('#mainTableWithUsers');
