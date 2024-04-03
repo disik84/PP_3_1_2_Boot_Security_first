@@ -103,6 +103,24 @@ async function getDefaultModal() {
     })
 }
 
+async function setRole(role) {
+    if ($('#roleUser').prop('checked')) {
+        let roleUser = {
+            id: 1,
+            name: "ROLE_USER",
+        };
+        role.push(roleUser)
+    }
+
+    if ($('#roleAdmin').prop('checked')) {
+        let roleAdmin = {
+            id: 2,
+            name: "ROLE_ADMIN",
+        };
+        role.push(roleAdmin)
+    }
+}
+
 // редактируем юзера из модалки редактирования, забираем данные, отправляем
 async function editUser(modal, id) {
     let preuser = await userFetchService.findOneUser(id);
@@ -150,21 +168,9 @@ async function editUser(modal, id) {
         let email = modal.find("#email").val().trim();
 
         let role = [];
-        if ($('#roleUser').prop('checked')) {
-            let roleUser = {
-                id: 1,
-                name: "ROLE_USER",
-            };
-            role.push(roleUser)
-        }
 
-        if ($('#roleAdmin').prop('checked')) {
-            let roleAdmin = {
-                id: 2,
-                name: "ROLE_ADMIN",
-            };
-            role.push(roleAdmin)
-        }
+        setRole(role);
+
         let data = {
             id: id,
             username: username,
@@ -237,21 +243,8 @@ async function getNewUserForm() {
             let password = $('#newUserForm').find("#password").val().trim();
             let email = $('#newUserForm').find("#email").val().trim();
             let role = [];
-            if ($('#roleUser').prop('checked')) {
-                let roleUser = {
-                    id: 1,
-                    name: "ROLE_USER",
-                };
-                role.push(roleUser)
-            }
 
-            if ($('#roleAdmin').prop('checked')) {
-                let roleAdmin = {
-                    id: 2,
-                    name: "ROLE_ADMIN",
-                };
-                role.push(roleAdmin)
-            }
+            setRole(role);
 
             let user = {
                 username: username,
